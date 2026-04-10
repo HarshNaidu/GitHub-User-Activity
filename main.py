@@ -1,5 +1,4 @@
 import sys
-
 from eventHandler import load_activity
 
 cmd = input("Welcome to GitHub User Access Checker! Please enter a GitHub username along with the command 'github-activity': ")
@@ -10,5 +9,5 @@ if sys.argv[0] != "github-activity":
 
 else:
     username = sys.argv[1]
-    print(f"Checking GitHub activity for user: {username}")
+    print(f"Checking GitHub activity for user: {username}\n--------------------------------------------------------------")
     load_activity(username)
