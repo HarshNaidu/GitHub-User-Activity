@@ -1,6 +1,6 @@
 import sys
 
-from eventHandler import load_activity
+from eventHandler import display_activity, load_activity
 
 cmd = input("Welcome to GitHub User Access Checker! Please enter a GitHub username along with the command 'github-activity': ")
 sys.argv = cmd.split()

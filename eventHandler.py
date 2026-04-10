@@ -1,4 +1,5 @@
 import json, requests
+from datetime import datetime
 
 fileName = "events.json"
 API_URL = "https://api.github.com/users/{username}/events"
@@ -9,11 +10,35 @@ def load_activity(username):
 
     if response.status_code == 200:
         activity = response.json()
-        save_activity(username, activity)
+        display_activity(activity)
     else:
         print(f"Failed to retrieve activity for user {username}. Status code: {response.status_code}")
 
-def save_activity(username, activity):
-    with open(fileName, 'w') as f:
-        json.dump(activity, f, indent=4)
-    print(f"Activity for user {username} has been saved to {fileName}.")
+def display_activity(activity):
+    try:
+        for event in activity:
+            if event['type'] == 'PushEvent':
+                created_at = datetime.strptime(event['created_at'], '%Y-%m-%dT%H:%M:%SZ')
+                print(f"Pushed to {event['repo']['name']} at {created_at.strftime('%Y-%m-%d %H:%M:%S')}\n--------------------------------------------------------------")
+            elif event['type'] == 'CreateEvent':
+                created_at = datetime.strptime(event['created_at'], '%Y-%m-%dT%H:%M:%SZ')
+                print(f"Created {event['payload']['ref_type']} {event['payload']['ref']} in {event['repo']['name']} at {created_at.strftime('%Y-%m-%d %H:%M:%S')}\n--------------------------------------------------------------")
+            elif event['type'] == 'PublicEvent':
+                created_at = datetime.strptime(event['created_at'], '%Y-%m-%dT%H:%M:%SZ')
+                print(f"Made {event['repo']['name']} public at {created_at.strftime('%Y-%m-%d %H:%M:%S')}\n--------------------------------------------------------------")
+            elif event['type'] == 'DeleteEvent':
+                created_at = datetime.strptime(event['created_at'], '%Y-%m-%dT%H:%M:%SZ')
+                print(f"Deleted {event['payload']['ref_type']} {event['payload']['ref']} in {event['repo']['name']} at {created_at.strftime('%Y-%m-%d %H:%M:%S')}\n--------------------------------------------------------------")
+            elif event['type'] == 'ForkEvent':
+                created_at = datetime.strptime(event['created_at'], '%Y-%m-%dT%H:%M:%SZ')
+                print(f"Forked {event['repo']['name']} at {created_at.strftime('%Y-%m-%d %H:%M:%S')}\n--------------------------------------------------------------")
+            elif event['type'] == 'IssuesEvent':
+                created_at = datetime.strptime(event['created_at'], '%Y-%m-%dT%H:%M:%SZ')
+                print(f"Issue {event['payload']['action']} in {event['repo']['name']} at {created_at.strftime('%Y-%m-%d %H:%M:%S')}\n--------------------------------------------------------------")
+            elif event['type'] == 'PullRequestEvent':
+                created_at = datetime.strptime(event['created_at'], '%Y-%m-%dT%H:%M:%SZ')
+                print(f"Pull request {event['payload']['action']} in {event['repo']['name']} at {created_at.strftime('%Y-%m-%d %H:%M:%S')}\n--------------------------------------------------------------")
+
+    except FileNotFoundError:
+        print("No activity data found. Please run the 'github-activity' command first to load the data.")
+
