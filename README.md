@@ -1,44 +1,53 @@
 # GitHub User Activity CLI
 
-A simple command-line tool that fetches and displays recent activity of a GitHub user using the GitHub Events API.
+A Python-based command-line tool that fetches and displays recent public activity of any GitHub user using the GitHub Events API.
+
+---
 
 ## 🚀 Features
 
-  * Fetches recent public activity of any GitHub user
-  * Displays different event types:
+* Fetches recent public activity (~30 latest events)
+* Supports multiple GitHub event types:
+
   * Push events (with commit count)
-  * Repository creation
-  * Forks
-  * Issues
-  * Pull requests
+  * Repository creation and deletion
+  * Issues and pull requests
   * Stars (watch events)
-  * Clean and readable CLI output
-  * Lightweight and fast (no unnecessary API calls)
+  * Public repository updates
+* Modular event handling system (clean separation of logic)
+* Graceful error handling with request timeouts
+* Optional GitHub token support for higher rate limits
 
 ---
 
 ## 🛠️ Tech Stack
 
 * Python 3
-* `requests` library
+* `requests`
 * GitHub REST API
+* `python-dotenv` (for authentication)
 
 ---
 
 ## 📦 Installation
 
-1. Clone the repository:
+```bash
+git clone https://github.com/HarshNaidu/GitHub-User-Activity.git
+cd GitHub-User-Activity
+pip install requests python-dotenv
+```
 
-   ```bash
-   git clone https://github.com/HarshNaidu/GitHub-User-Activity.git
-   cd GitHub-User-Activity
-   ```
+---
 
-2. Install dependencies:
+## 🔐 (Optional) Setup GitHub Token
 
-   ```bash
-   pip install requests
-   ```
+Create a `.env` file in the root directory:
+
+```
+GITHUB_TOKEN=your_personal_access_token
+```
+
+This increases API rate limits and avoids request throttling.
 
 ---
 
@@ -50,7 +59,7 @@ Run the script:
 python main.py
 ```
 
-Then enter the command in the following format:
+Then enter:
 
 ```bash
 github-activity <github-username>
@@ -60,19 +69,6 @@ github-activity <github-username>
 
 ```bash
 github-activity HarshNaidu
-```
-
-### Sample Output
-
-```
-Checking GitHub activity for user: HarshNaidu
---------------------------------------------------------------
-Pushed 3 commits to HarshNaidu/GitHub-User-Activity at 2026-04-10 14:32:10
---------------------------------------------------------------
-Opened issue in HarshNaidu/GitHub-User-Activity at 2026-04-09 10:12:45
---------------------------------------------------------------
-Starred HarshNaidu/GitHub-User-Activity at 2026-04-08 18:20:11
---------------------------------------------------------------
 ```
 
 ---
@@ -90,33 +86,35 @@ github-activity-cli/
 
 ## ⚙️ How It Works
 
-* Uses the GitHub Events API:
+* Fetches events from:
 
   ```
   https://api.github.com/users/{username}/events
   ```
-* Parses event types and formats them into readable CLI output
-* Extracts commit count directly from event payload (no extra API calls)
+* Maps event types to dedicated handler functions
+* Extracts structured information from event payloads
+* Displays formatted CLI output
 
 ---
 
 ## ⚠️ Limitations
 
-* Only fetches recent public activity (last ~30 events)
-* Subject to GitHub API rate limits (60 requests/hour for unauthenticated users)
+* Only recent public activity is available (~30 events)
+* Some events may require additional API calls (e.g., commit count fallback)
+* Rate limited to 60 requests/hour without authentication
 
 ---
 
 ## 🔮 Future Improvements
 
-* Add authentication (increase rate limits)
-* Support CLI arguments instead of input prompt
-* Filter events by type (e.g., only commits, only PRs)
-* Export output to JSON or CSV
+* Replace input-based command with proper CLI arguments (argparse)
+* Add event filtering (e.g., only commits, PRs)
+* Export results to JSON/CSV
 * Add colored terminal output
+* Package as an installable CLI tool
 
 ---
 
 ## 📜 License
 
-This project is open-source and available under the MIT License.
+MIT License
