@@ -1,13 +1,17 @@
-import sys
 from eventHandler import load_activity
 
-cmd = input("Welcome to GitHub User Access Checker! Please enter a GitHub username along with the command 'github-activity': ")
-sys.argv = cmd.split()
+def main():
+    cmd = input("Welcome to GitHub User Activity Checker! Please enter a GitHub username along with the command 'github-activity': ")
+    
+    parts = cmd.split()
 
-if sys.argv[0] != "github-activity":
-    print(f"{sys.argv[0]} is not a valid command. Please use 'github-activity' followed by a GitHub username.")
+    if len(parts) < 2 or parts[0] != "github-activity":
+        print(f"Invalid command. Please use 'github-activity' followed by a GitHub username.")
+    
+    else:
+        username = parts[1]
+        print(f"Fetching activity for user: {username}...")
+        load_activity(username)
 
-else:
-    username = sys.argv[1]
-    print(f"Checking GitHub activity for user: {username}\n--------------------------------------------------------------")
-    load_activity(username)
+if __name__ == "__main__":
+    main()
