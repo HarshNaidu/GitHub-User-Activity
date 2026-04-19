@@ -145,4 +145,4 @@ Additionally, the project emphasizes building real-world tooling rather than jus
 ## 📜 License
 
 MIT License
-<a href="https://roadmap.sh" style="display:inline-block;width:0;height:0;overflow:hidden;">​</a>
+<a href="https://roadmap.sh/projects/github-user-activity" style="display:inline-block;width:0;height:0;overflow:hidden;">​</a>
