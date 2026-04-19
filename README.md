@@ -14,6 +14,8 @@ A Python-based command-line tool that fetches and displays recent public activit
   * Issues and pull requests
   * Stars (watch events)
   * Public repository updates
+* Filter events by type (`--type`)
+* Limit number of results (`--limit`)
 * Modular event handling system (clean separation of logic)
 * Graceful error handling with request timeouts
 * Optional GitHub token support for higher rate limits
@@ -34,7 +36,7 @@ A Python-based command-line tool that fetches and displays recent public activit
 ```bash
 git clone https://github.com/HarshNaidu/GitHub-User-Activity.git
 cd GitHub-User-Activity
-pip install requests python-dotenv
+pip install -e .
 ```
 
 ---
@@ -53,22 +55,28 @@ This increases API rate limits and avoids request throttling.
 
 ## ▶️ Usage
 
-Run the script:
-
-```bash
-python main.py
-```
-
-Then enter:
+Run directly from CLI:
 
 ```bash
 github-activity <github-username>
 ```
 
-### Example
+### Examples
 
 ```bash
 github-activity HarshNaidu
+```
+
+```bash
+github-activity HarshNaidu --type push
+```
+
+```bash
+github-activity HarshNaidu --limit 5
+```
+
+```bash
+github-activity HarshNaidu --type pr --limit 3
 ```
 
 ---
@@ -77,8 +85,12 @@ github-activity HarshNaidu
 
 ```
 github-activity-cli/
-│── main.py
-│── eventHandler.py
+│── github_activity/
+│   │── __init__.py
+│   │── main.py
+│   │── eventHandler.py
+│
+│── setup.py
 │── README.md
 ```
 
@@ -92,6 +104,7 @@ github-activity-cli/
   https://api.github.com/users/{username}/events
   ```
 * Maps event types to dedicated handler functions
+* Filters events based on CLI arguments
 * Extracts structured information from event payloads
 * Displays formatted CLI output
 
@@ -105,13 +118,27 @@ github-activity-cli/
 
 ---
 
+## 🎯 Purpose of the Project
+
+This project was built to strengthen core software engineering fundamentals through practical implementation. It focuses on:
+
+* Designing a modular CLI-based application
+* Working with external APIs (GitHub Events API)
+* Parsing and transforming structured JSON data
+* Implementing clean separation of concerns using handler-based architecture
+* Managing environment variables and authentication securely
+* Writing maintainable and extensible Python code
+
+Additionally, the project emphasizes building real-world tooling rather than just solving isolated problems, with a focus on readability, scalability, and proper error handling.
+
+---
+
 ## 🔮 Future Improvements
 
-* Replace input-based command with proper CLI arguments (argparse)
-* Add event filtering (e.g., only commits, PRs)
-* Export results to JSON/CSV
 * Add colored terminal output
-* Package as an installable CLI tool
+* Export results to JSON/CSV
+* Add caching to reduce API calls
+* Publish as a package on PyPI
 
 ---
 

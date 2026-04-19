@@ -166,6 +166,24 @@ def display_activity(events):
             
             print_separator()
 
-def load_activity(username):
+def load_activity(username, event_type=None, limit=None):
     events = fetch_activity(username)
+
+    if event_type:
+        event_map = {
+            "push" : "PushEvent",
+            "issues" : "IssuesEvent",
+            "pr" : "PullRequestEvent",
+            "create" : "CreateEvent",
+            "public" : "PublicEvent",
+            "delete" : "DeleteEvent",
+            "watch" : "WatchEvent"
+        }
+
+        target_event = event_map.get(event_type)
+        events = [e for e in events if e.get("type") == target_event]
+
+    if limit:
+        events = events[:limit]
+
     display_activity(events)
